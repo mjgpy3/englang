@@ -4,7 +4,8 @@ class Tok
     'I' => :kwd_i,
     'ask' => :kwd_ask,
     'thing' => :kwd_thing,
-    'is' => :kwd_is
+    'is' => :kwd_is,
+    'not' => :kwd_not
   }
 
   FLUFF = [

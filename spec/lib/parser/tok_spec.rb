@@ -11,7 +11,8 @@ describe Tok do
       ['I', [:kwd_i]],
       ['ask', [:kwd_ask]],
       ['thing', [:kwd_thing]],
-      ['is', [:kwd_is]]
+      ['is', [:kwd_is]],
+      ['not', [:kwd_not]]
     ].each do |text, tokens|
       context "when given the '#{text}' keyword" do
         let(:text) { text }
@@ -58,6 +59,12 @@ describe Tok do
       let(:text) { 'beers?' }
 
       it { should == [[:ident, 'beers'], :quest] }
+    end
+
+    context 'when given a line of text' do
+      let(:text) { "I ask: is a thing a thing?" }
+
+      it { should == [:kwd_i, :kwd_ask, :colon, :kwd_is, :kwd_thing, :kwd_thing, :quest] }
     end
 
   end
