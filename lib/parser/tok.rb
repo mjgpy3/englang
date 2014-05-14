@@ -5,7 +5,11 @@ class Tok
     'ask' => :kwd_ask,
     'thing' => :kwd_thing,
     'is' => :kwd_is,
-    'not' => :kwd_not
+    'not' => :kwd_not,
+    'named' => :kwd_named,
+    'called' => :kwd_named,
+    'have' => :kwd_has,
+    'has' => :kwd_has
   }
 
   FLUFF = [
@@ -27,8 +31,10 @@ class Tok
         val << NON_IGNORE[word]
       elsif PUNCT[word[-1]]
         val += enize(word[0..-2]) + enize(word[-1])
+      elsif word.start_with?('"') && word.end_with?('"')
+        val << word[1..-2]
       elsif !FLUFF.include?(word)
-        val << [:ident, word]
+        val << word
       end
     end
     val
