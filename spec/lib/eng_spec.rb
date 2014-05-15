@@ -6,43 +6,42 @@ describe Eng do
 
   describe '#run_line' do
 
-    context 'when no assignment is given' do
+    context 'when I have not named a thing' do
 
-      context 'and I check if that assigned value exists' do
-        subject { eng.run_line('I ask: does "foobar" exist?') }
+      [
+        ['exists', 'I ask: does "foobar" exist?', /No/],
+        ['does not exist', 'I ask: does "foobar" not exist?', /Yes/],
+        ['is a thing', 'I ask: is "foobar" a thing?', /No/]
+      ].each do |check_text, line_to_run, expected_matcher|
 
-        it { should match(/No/) }
-      end
+        context "and I check if that non-existent thing #{check_text}" do
+          subject { eng.run_line(line_to_run) }
 
-      context 'and I check if that assigned value does not exists' do
-        subject { eng.run_line('I ask: does "foobar" not exist?') }
+          it { should match(expected_matcher) }
+        end
 
-        it { should match(/Yes/) }
       end
 
     end
 
-    context 'when given an assignment' do
+    context 'when I name a thing' do
       before(:each) do
         eng.run_line('I have a thing named "foobar"')
       end
 
-      context 'and I check if that assigned value exists' do
-        subject { eng.run_line('I ask: does "foobar" exist?') }
+      [
+        ['exists', 'I ask: does "foobar" exist?', /Yes/],
+        ['exists using weird case', 'i aSk: DOES "fOobAr" eXist?', /Yes/],
+        ['does not exist', 'I ask: does "foobar" not exist?', /No/],
+        ['is a thing', 'I ask: is "foobar" a thing?', /Yes/]
+      ].each do |check_text, line_to_run, expected_matcher|
 
-        it { should match(/Yes/) }
-      end
+        context "and I check if that named thing #{check_text}" do
+          subject { eng.run_line(line_to_run) }
 
-      context 'and I check if that assigned value exists using weird case' do
-        subject { eng.run_line('i aSk: DOES "fOobAr" eXist?') }
+          it { should match(expected_matcher) }
+        end
 
-        it { should match(/Yes/) }
-      end
-
-      context 'and I check if that assigned value does not exists' do
-        subject { eng.run_line('I ask: does "foobar" not exist?') }
-
-        it { should match(/No/) }
       end
 
     end
