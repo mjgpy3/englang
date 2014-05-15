@@ -1,9 +1,8 @@
 class Tok
 
   KWDS = {
-    'I' => :kwd_i,
+    'i' => :kwd_i,
     'ask' => :kwd_ask,
-    'thing' => :kwd_thing,
     'is' => :kwd_is,
     'not' => :kwd_not,
     'named' => :kwd_named,
@@ -29,6 +28,7 @@ class Tok
   def self.enize(text)
     val = []
     text.split(' ').each do |word|
+      word = word.downcase
       if NON_IGNORE[word]
         val << NON_IGNORE[word]
       elsif PUNCT[word[-1]]
@@ -36,7 +36,7 @@ class Tok
       elsif word.start_with?('"') && word.end_with?('"')
         val << word[1..-2]
       elsif !FLUFF.include?(word)
-        val << word
+        val << "type_#{word}".to_sym
       end
     end
     val

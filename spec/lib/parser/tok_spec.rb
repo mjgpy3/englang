@@ -10,7 +10,7 @@ describe Tok do
       ['', []],
       ['I', [:kwd_i]],
       ['ask', [:kwd_ask]],
-      ['thing', [:kwd_thing]],
+      ['thing', [:type_thing]],
       ['is', [:kwd_is]],
       ['not', [:kwd_not]],
       ['named', [:kwd_named]],
@@ -38,13 +38,32 @@ describe Tok do
     end
 
     [
-      ['foo', 'foo'],
       ['"foo"', 'foo']
     ].each do |ident, ident_value|
       context "when given an identifier #{ident}" do
         let(:text) { ident }
 
         it { should == [ident_value] }
+      end
+    end
+
+    def randomize_case(word)
+      new_word = ''
+      word.each_char do |c|
+        new_word << c.send([:upcase, :downcase].sample)
+      end
+      new_word
+    end
+
+    [
+      ['"foobar"', ['foobar']],
+      ['i', [:kwd_i]],
+      ['?', [:quest]]
+    ].each do |text, expected_tokens|
+      context "when given #{text} in a strange case" do
+        let(:text) { randomize_case(text) }
+
+        it { should == expected_tokens }
       end
     end
 
@@ -67,15 +86,15 @@ describe Tok do
     end
 
     context 'when given a word ending in punctuation' do
-      let(:text) { 'beers?' }
+      let(:text) { 'exist?' }
 
-      it { should == ['beers', :quest] }
+      it { should == [:kwd_exist, :quest] }
     end
 
     context 'when given a line of text' do
       let(:text) { "I ask: is a thing a thing?" }
 
-      it { should == [:kwd_i, :kwd_ask, :colon, :kwd_is, :kwd_thing, :kwd_thing, :quest] }
+      it { should == [:kwd_i, :kwd_ask, :colon, :kwd_is, :type_thing, :type_thing, :quest] }
     end
 
   end

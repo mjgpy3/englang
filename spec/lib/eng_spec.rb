@@ -33,6 +33,12 @@ describe Eng do
         it { should match(/Yes/) }
       end
 
+      context 'and I check if that assigned value exists using weird case' do
+        subject { eng.run_line('i aSk: DOES "fOobAr" eXist?') }
+
+        it { should match(/Yes/) }
+      end
+
       context 'and I check if that assigned value does not exists' do
         subject { eng.run_line('I ask: does "foobar" not exist?') }
 
