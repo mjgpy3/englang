@@ -9,7 +9,9 @@ class Tok
     'named' => :kwd_named,
     'called' => :kwd_named,
     'have' => :kwd_has,
-    'has' => :kwd_has
+    'has' => :kwd_has,
+    'exist' => :kwd_exist,
+    'does' => :kwd_does
   }
 
   FLUFF = [

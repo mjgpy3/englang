@@ -16,7 +16,9 @@ describe Tok do
       ['named', [:kwd_named]],
       ['called', [:kwd_named]],
       ['have', [:kwd_has]],
-      ['has', [:kwd_has]]
+      ['has', [:kwd_has]],
+      ['exist', [:kwd_exist]],
+      ['does', [:kwd_does]]
     ].each do |text, tokens|
       context "when given the '#{text}' keyword" do
         let(:text) { text }

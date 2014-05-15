@@ -14,6 +14,12 @@ describe Eng do
         it { should match(/No/) }
       end
 
+      context 'and I check if that assigned value does not exists' do
+        subject { eng.run_line('I ask: does "foobar" not exist?') }
+
+        it { should match(/Yes/) }
+      end
+
     end
 
     context 'when given an assignment' do
@@ -25,6 +31,12 @@ describe Eng do
         subject { eng.run_line('I ask: does "foobar" exist?') }
 
         it { should match(/Yes/) }
+      end
+
+      context 'and I check if that assigned value does not exists' do
+        subject { eng.run_line('I ask: does "foobar" not exist?') }
+
+        it { should match(/No/) }
       end
 
     end
