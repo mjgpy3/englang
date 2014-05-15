@@ -3,7 +3,7 @@ require './lib/parser/tok.rb'
 class Eng
 
   def initialize
-    @my_values = []
+    @my_values = {}
   end
 
   def run_line(line)
@@ -15,8 +15,10 @@ class Eng
 
   private
 
+  # TODO: Refactor logic for answering questions to Answerer class
+
   def store_value
-    @my_values << first_name
+    @my_values[first_name] = :type_thing
   end
 
   def an_assignment?
@@ -24,11 +26,33 @@ class Eng
   end
 
   def answer
-    b_to_s(should_invert? ? !value_exist? : value_exist?) 
+    determine_question_type
+    make_answer
   end
 
-  def value_exist?
+  def determine_question_type
+    @question = :exist? if question_of_existence?
+    @question = :exist_with_type? if question_of_kind?
+  end
+
+  def question_of_kind?
+    @tokens.include?(:kwd_is)
+  end
+
+  def question_of_existence?
+    @tokens.include?(:kwd_exist)
+  end
+
+  def make_answer
+    b_to_s(should_invert? ? !send(@question) : send(@question))
+  end
+
+  def exist?
     @my_values.include?(first_name)
+  end
+
+  def exist_with_type?
+    @my_values[first_name] == first_type
   end
 
   def should_invert?
@@ -40,7 +64,15 @@ class Eng
   end
 
   def first_name
-    @tokens.select { |x| x.is_a?(String) }.first
+    types_matching(String, //).first
+  end
+
+  def first_type
+    types_matching(Symbol, /^type_/).first
+  end
+
+  def types_matching(klass, regex = //)
+    @tokens.select { |tok| tok.is_a?(klass) && tok.to_s.match(regex) }
   end
 
   def tokenize(line)
