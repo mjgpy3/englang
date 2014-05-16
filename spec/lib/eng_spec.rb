@@ -25,6 +25,31 @@ describe Eng do
 
     end
 
+    context 'when I make a new kind of thing' do
+      before(:each) do
+        eng.run_line('a car is a kind of thing.')
+      end
+
+      context 'and I name that new kind of thing' do
+        before(:each) do
+          eng.run_line('I have a car named "sonic"')
+        end
+
+        context 'and I check if that new entity is a kind of that new kind' do
+          subject { eng.run_line('I ask: is "sonic" a car?') }
+
+          it { should match(/Yes/) }
+        end
+
+        context 'and I check if that new entity is a kind of thing' do
+          subject { eng.run_line('I ask: is "sonic" a thing?') }
+
+          it { should match(/Yes/) }
+        end
+
+      end
+    end
+
     context 'when I name a thing' do
       before(:each) do
         eng.run_line('I have a thing named "foobar"')
