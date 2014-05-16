@@ -1,8 +1,10 @@
 require './lib/parser/tok.rb'
+require './lib/ancestory.rb'
 
 class Eng
 
-  def initialize
+  def initialize(ancestory = Ancestory.new)
+    @ancestory = ancestory
     @my_values = {}
     @ancestors_map = { type_thing: nil }
   end
@@ -11,7 +13,7 @@ class Eng
     tokenize(line)
 
     store_value if an_assignment?
-    @ancestors_map[first_type] = :type_thing if @tokens.include?(:kwd_kind)
+    @ancestory.provide_ancestor(first_type, :type_thing) if @tokens.include?(:kwd_kind)
     answer if a_question?
   end
 
@@ -55,16 +57,7 @@ class Eng
 
   def exist_with_type?
     return false if !exist?
-    type = @my_values[first_name]
-
-    return true if type == first_type
-
-    while @ancestors_map.key?(type)
-      return true if first_type == @ancestors_map[type]
-      type = @ancestors_map[type]
-    end
-
-    false
+    @ancestory.in_ancestory?(@my_values[first_name], first_type)
   end
 
   def should_invert?
