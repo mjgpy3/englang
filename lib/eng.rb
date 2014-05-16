@@ -6,14 +6,13 @@ class Eng
   def initialize(ancestory = Ancestory.new)
     @ancestory = ancestory
     @my_values = {}
-    @ancestors_map = { type_thing: nil }
   end
 
   def run_line(line)
     tokenize(line)
 
     store_value if an_assignment?
-    @ancestory.provide_ancestor(first_type, :type_thing) if @tokens.include?(:kwd_kind)
+    set_ancestor if an_ancestory?
     answer if a_question?
   end
 
@@ -25,8 +24,16 @@ class Eng
     @my_values[first_name] = first_type
   end
 
+  def set_ancestor
+    @ancestory.provide_ancestor(first_type, :type_thing)
+  end
+
   def an_assignment?
     @tokens.include?(:kwd_has)
+  end
+
+  def an_ancestory?
+    @tokens.include?(:kwd_kind)
   end
 
   def answer
