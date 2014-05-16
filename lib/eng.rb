@@ -19,6 +19,7 @@ class Eng
   private
 
   # TODO: Refactor logic for answering questions to Answerer class
+  # TODO: Refactor logic for parsing tokens to a Parser class
 
   def store_value
     @my_values[first_name] = first_type
