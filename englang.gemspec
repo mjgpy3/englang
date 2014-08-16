@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.files = []
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'rake'
 end
